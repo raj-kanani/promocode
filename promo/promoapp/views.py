@@ -58,8 +58,6 @@ def addorder(request):
         c = Coupon.objects.filter(code=request.POST.get('order_coupen')).first()
 
         user = UserData.objects.filter(birth_date=request.user.birth_date).first()
-        # if not c:
-        #     return HttpResponse('doesnot exist')
 
         if c.discounttype == 'Flat':
             order_total = order_amount - c.discount
@@ -121,31 +119,7 @@ class updatecoupen(View):
             return HttpResponseRedirect('/show/')
 
 
-# def updatecoupen(request, id):
-#     cp = Coupon.objects.get(pk=id)
-#     count_coupen = cp.coupon_related.filter().count()
-#     if request.method == "POST":
-#         form = AddCouponForm(request.POST, instance=cp)
-#         cd = request.POST.get('code')
-#
-#         if form.is_valid():
-#             if count_coupen:
-#                 messages.info("Dont change coupen")
-#             else:
-#                 cp = cd
-#                 form.save()
-#                 return redirect('/show/')
-#         else:
-#             messages.error("invalid")
-#     else:
-#         form = AddCouponForm(instance=cp)
-#         return render(request, 'coupen-edit.html', {'coupen': cp, 'form': form})
 
-
-# def deletecoupen(request):
-#     dc = Coupon.objects.get(id=id)
-#     dc.delete()
-#     return redirect('/show/')
 
 class Deletecoupen(RedirectView):
     url = '/show/'

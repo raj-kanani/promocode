@@ -59,35 +59,4 @@ class Order(models.Model):
     user = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name='order_user')
     order_total = models.IntegerField()
     order_coupen = models.ForeignKey(Coupon, on_delete=models.CASCADE, related_name='my_coupen')
-    used = models.IntegerField(default=0)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # def discount(self):
-    #     return self.order_amount - self.order_total
+    used = models.IntegerField()
