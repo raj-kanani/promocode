@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>add-order</title>
+</head>
+<body>
+    <h1> ADD-ORDER.......</h1><br><hr>
+    <form action="" method="POST">
+        {% csrf_token %}
+         order_amount : <input type="number" name="order_amount" id="order_amount" required><br>
+         order_coupen : <input type="text" name="order_coupen" id="order_coupen" required><br><br><hr>
+
+        <input type="submit" value="verify">
+     </form>
+</body>
+</html>

@@ -3,7 +3,7 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>TODO</title>
+    <title>edit</title>
 
 </head>
 <body>
@@ -11,13 +11,13 @@
 <div class="bgimg-1 w3-display-container w3-opacity-min" id="home">
   <div class="w3-display-middle" style="white-space:nowrap;">
     <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">MY
-        <span class="w3-hide-small">WEBSITE</span> </span>
+        <span class="w3-hide-small">COUPON-EDIT</span> </span><br><hr>
   </div>
 </div>
 
     <form method="post" action="" class="post-form" enctype="multipart/form-data">
         {% csrf_token %}
-        {sc.as_p}}
+        {{sc.as_p}}<br><hr>
         <button type="submit" class="save btn btn-default">UPDATE</button>
     </form>
   {% endblock content %}

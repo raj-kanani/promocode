@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>coupen</title>
+    <title>add</title>
 </head>
 <body>
+    <h1>COUPON-ADD......</h1><br><hr>
     <div class="applyCoupon">
   <form class="applyCoupon_form" action="{% url 'add' %}" method="post" >
     {% csrf_token %}
@@ -24,14 +25,3 @@
 </body>
 </html>
 
-
-
-<!--code : <input type="text" name="code" required><br>-->
-<!--     GENDER <input type="radio" name="gender" value="male">Male-->
-<!--            <input type="radio" name="gender" value="female">Female <br>-->
-<!--      start date : <input type="date" name="start_date" required><br>-->
-<!--      end date : <input type="date" name="end_date" required><br>-->
-<!--      discount : <input type="number" name="discount" required><br>-->
-<!--      active : <input type="checkbox" name="active" required><br>-->
-
-<!-- Code : <input type = "text" class = "normal" style='text-transform:uppercase' name = "code" >-->
