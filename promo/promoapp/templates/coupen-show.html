@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>coupen detail</title>
+    <style>
+table, th, td {
+  border: 1px solid blue ;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 10px;
+}
+table {
+  display: table;
+  border-collapse: separate;
+  border-spacing: 2px;
+  border-color: gray;
+}
+</style>
+</head>
+<body>
+<div class="table-responsive">
+  <table class="table align-middle" style="background-color:#B3C7C5">
+    <thead>
+    <tr>
+        <th scope="col">code </th>
+        <th scope="col">gender</th>
+        <th scope="col">start_date</th>
+        <th scope="col">end_date</th>
+        <th scope="col">discount</th>
+        <th scope="col">action</th>
+
+    </tr>
+  </thead>
+        <tbody>
+        {% for val in coupen %}
+        <tr>
+            <td>{{val.code}}</td>
+            <td>{{val.gender}}</td>
+             <td>{{val.start_date}}</td>
+             <td>{{val.end_date}}</td>
+             <td>{{val.discount}}</td>
+
+             <td>
+                 <button><a href="/update/{{val.id}}">EDIT</a></button>
+                 <button><a href="/add/">ADD</a></button>
+
+                 <button><a href="/delete/{{val.id}}/">DELETE</a></button>
+
+             </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+  </table>
+</div>
+
+
+
+</body>
+</html>
