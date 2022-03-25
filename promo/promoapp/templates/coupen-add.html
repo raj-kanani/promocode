@@ -10,7 +10,7 @@
 <div class="applyCoupon">
     <form class="applyCoupon_form" action="{% url 'add' %}" method="post">
         {% csrf_token %}
-        {{ form }}<br>
+        {{ form.as_p }}<br>
         <hr>
 
         <input type="submit" value="verify">
