@@ -5,23 +5,38 @@
     <title>add</title>
 </head>
 <body>
-    <h1>COUPON-ADD......</h1><br><hr>
-    <div class="applyCoupon">
-  <form class="applyCoupon_form" action="{% url 'add' %}" method="post" >
-    {% csrf_token %}
-    {{ form }}<br><hr>
+<h1>COUPON-ADD......</h1><br>
+<hr>
+<div class="applyCoupon">
+    <form class="applyCoupon_form" action="{% url 'add' %}" method="post">
+        {% csrf_token %}
+        {{ form }}<br>
+        <hr>
 
-    <input type="submit" value="verify">
-  </form>
+        <input type="submit" value="verify">
+    </form>
 </div>
 {% if messages %}
 <ul>
     {% for message in messages %}
-        <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
 </ul>
 {% endif %}
 
 </body>
 </html>
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $( "#id_start_date" ).datepicker();
+    $( "#id_end_date" ).datepicker();
+  } );
+
+</script>
+
 

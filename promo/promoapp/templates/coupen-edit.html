@@ -1,25 +1,39 @@
-
 <html>
 {% load static %}
 <head>
     <meta charset="UTF-8">
     <title>edit</title>
-
 </head>
 <body>
-  {% block content %}
+{% block content %}
 <div class="bgimg-1 w3-display-container w3-opacity-min" id="home">
-  <div class="w3-display-middle" style="white-space:nowrap;">
+    <div class="w3-display-middle" style="white-space:nowrap;">
     <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">MY
-        <span class="w3-hide-small">COUPON-EDIT</span> </span><br><hr>
-  </div>
+        <span class="w3-hide-small">COUPON-EDIT</span> </span><br>
+        <hr>
+    </div>
 </div>
 
-    <form method="post" action="" class="post-form" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{sc.as_p}}<br><hr>
-        <button type="submit" class="save btn btn-default">UPDATE</button>
-    </form>
-  {% endblock content %}
+<form method="post" action="" class="post-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}<br>
+    <hr>
+    <button type="submit" class="save btn btn-default">UPDATE</button>
+</form>
+{% endblock content %}
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $( "#id_start_date" ).datepicker();
+    $( "#id_end_date" ).datepicker();
+  } );
+
+</script>
+
+
 </body>
 </html>

@@ -1,12 +1,8 @@
 import datetime
 from django.utils import timezone
 from django.contrib import messages
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
-from django.views import View
-from django.views.generic import RedirectView
-
 from .models import Coupon, UserData, Order
 from .forms import AddCouponForm
 
@@ -49,9 +45,9 @@ def showcoupen(request):
 #
 #             return redirect('/show/')
 
-
 def addorder(request):
     if request.method == "POST":
+        # order_coupen = request.POST['order_coupen']
         order_coupen = request.POST.get('order_coupen')
         order_amount = int(request.POST.get('order_amount'))
 
@@ -64,8 +60,8 @@ def addorder(request):
         else:
             birthdate = user.birth_date
             today_date = datetime.date.today()
-            valid = timezone.now().date().strftime("%m-%d")
-            if birthdate and birthdate.strftime("%m-%d") == valid:
+            valid = timezone.now().date().strftime("%Y-%m-%d %H:%M:%S")
+            if birthdate and birthdate.strftime("%Y-%m-%d %H:%M:%S") == valid:
                 discount = order_amount * (c.discount / 100)
 
                 total = order_amount - discount
@@ -84,11 +80,12 @@ def addorder(request):
                 if cc < max:
                     if uc >= limit:
                         return HttpResponse("Per user limit is over")
+                    print('hello india_____________________')
                     new = Order.objects.create(order_coupen=c, order_amount=order_amount, order_total=order_total,
                                                user=request.user)
                     new.save()
                 else:
-                    return HttpResponse("sorry limited coupen")
+                    return HttpResponse(" don't access same coupon multiple time, please use other available coupon...")
         except:
             create_order = Order.objects.create(order_coupen=c, order_amount=order_amount,
                                                 order_total=order_total, user=request.user)
@@ -104,30 +101,48 @@ def showorder(request):
     return render(request, 'order-show.html', {'so': so})
 
 
-class updatecoupen(View):
-    def get(self, request, id):
-        s = Coupon.objects.get(id=id)
-        print(s.id)
-        fm = AddCouponForm(instance=s)
-        return render(request, 'coupen-edit.html', {'sc': fm})
+def updatecoupon(request, id):
+    cp = Coupon.objects.get(pk=id)
+    order_count = cp.my_coupen.filter().count()
 
-    def post(self, request, id):
-        s = Coupon.objects.get(id=id)
-        fm = AddCouponForm(request.POST, instance=s)
-        if fm.is_valid():
-            fm.save()
-            return HttpResponseRedirect('/show/')
+    if request.method == "POST":
+        form = AddCouponForm(request.POST, instance=cp)
+        c = request.POST.get('code')
+
+        if form.is_valid():
+            if order_count:
+                return HttpResponse("you can not change used coupon")
+            else:
+                cp = c
+                form.save()
+                return redirect('show')
+        else:
+            print(form.errors)
+    else:
+        form = AddCouponForm(instance=cp)
+        return render(request, 'coupen-edit.html', {'coupon': cp, 'form': form})
 
 
+# class updatecoupen(View):
+#     def get(self, request, id):
+#         s = Coupon.objects.get(id=id)
+#         # print(s.id)
+#         fm = AddCouponForm(instance=s)
+#         return render(request, 'coupen-edit.html', {'sc': fm})
+#
+#     def post(self, request, id):
+#         s = Coupon.objects.get(id=id)
+#         fm = AddCouponForm(request.POST, instance=s)
+#         if fm.is_valid():
+#             fm.save()
+#             return HttpResponseRedirect('/show/')
 
+def deletecoupon(request, id):
+    coupon = Coupon.objects.get(pk=id)
+    data_count = coupon.my_coupen.filter().count()
 
-class Deletecoupen(RedirectView):
-    url = '/show/'
-
-    def get_redirect_url(self, *args, **kwargs):
-        print('delete-data', kwargs)
-        # d = kwargs['id']
-        # Coupon.objects.get(id=d).delete()
-        obj = Coupon.objects.get(id=kwargs['id'])
-        obj.delete()
-        return super().get_redirect_url(*args, **kwargs)
+    if data_count:
+        return HttpResponse("Used coupon don't delete")
+    else:
+        coupon.delete()
+        return redirect('show')

@@ -18,35 +18,36 @@ table {
   border-spacing: 2px;
   border-color: gray;
 }
-</style>
+
+
+    </style>
 </head>
 <body>
-<h1>SHOW-ORDER.......</h1><br><hr>
+<h1>SHOW-ORDER.......</h1><br>
+<hr>
 <div class="table-responsive">
-  <table class="table align-middle" style="background-color:#B3C7C5">
-    <thead>
-    <tr>
-        <th scope="col">order_amount </th>
-        <th scope="col">order_user</th>
-        <th scope="col">order_total</th>
-        <th scope="col">order_coupen</th>
+    <table class="table align-middle" style="background-color:#B3C7C5">
+        <thead>
+        <tr>
+            <th scope="col">order_amount</th>
+            <th scope="col">order_user</th>
+            <th scope="col">order_total</th>
+            <th scope="col">order_coupen</th>
 
-    </tr>
-  </thead>
+        </tr>
+        </thead>
         <tbody>
         {% for val in so %}
         <tr>
             <td>{{val.order_amount}}</td>
             <td>{{val.user}}</td>
-             <td>{{val.order_total}}</td>
-             <td>{{val.order_coupen}}</td>
+            <td>{{val.order_total}}</td>
+            <td>{{val.order_coupen}}</td>
         </tr>
         {% endfor %}
         </tbody>
-  </table>
+    </table>
 </div>
-
-
 
 </body>
 </html>

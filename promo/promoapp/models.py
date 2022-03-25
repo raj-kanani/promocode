@@ -22,7 +22,7 @@ class Coupon(models.Model):
                     ('Percentage', 'percentage')]
 
     discounttype = models.CharField(choices=TYPE_CHOICES, default='flat', max_length=10)
-    max_coupen= models.IntegerField(null=True)
+    max_coupen = models.IntegerField(null=True)
     user_limit = models.IntegerField(null=True)
 
     def clean(self):
@@ -38,12 +38,6 @@ class Coupon(models.Model):
         return self.code
 
 
-# class User(models.Model):
-#     user_id = models.IntegerField()
-#     user_birthdate = models.DateField()
-#     gender = models.ForeignKey(Coupon, on_delete=models.CASCADE)
-#     amount = models.IntegerField(validators=[MinValueValidator(100), MaxValueValidator(1500000)])
-
 class UserData(AbstractUser):
     birth_date = models.DateField(null=True, blank=True)
     GENDER_CHOICES = (
@@ -54,9 +48,10 @@ class UserData(AbstractUser):
     def __str__(self):
         return "{}".format(self.username)
 
+
 class Order(models.Model):
     order_amount = models.IntegerField(validators=[MinValueValidator(100), MaxValueValidator(1500000)])
     user = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name='order_user')
     order_total = models.IntegerField()
     order_coupen = models.ForeignKey(Coupon, on_delete=models.CASCADE, related_name='my_coupen')
-    used = models.IntegerField()
+    used = models.IntegerField(default=0)

@@ -18,46 +18,46 @@ table {
   border-spacing: 2px;
   border-color: gray;
 }
-</style>
+
+    </style>
 </head>
 <body>
-    <h1>SHOW-COUPON...</h1><br><hr>
+<h1>SHOW-COUPON...</h1><br>
+<hr>
 <div class="table-responsive">
-  <table class="table align-middle" style="background-color:#9DC656">
-    <thead>
-    <tr>
-        <th scope="col">code </th>
-        <th scope="col">gender</th>
-        <th scope="col">start_date</th>
-        <th scope="col">end_date</th>
-        <th scope="col">discount</th>
-        <th scope="col">action</th>
+    <table class="table align-middle" style="background-color:#9DC656">
+        <thead>
+        <tr>
+            <th scope="col">code</th>
+            <th scope="col">gender</th>
+            <th scope="col">start_date</th>
+            <th scope="col">end_date</th>
+            <th scope="col">discount</th>
+            <th scope="col">action</th>
 
-    </tr>
-  </thead>
+        </tr>
+        </thead>
         <tbody>
         {% for val in coupen %}
         <tr>
             <td>{{val.code}}</td>
             <td>{{val.gender}}</td>
-             <td>{{val.start_date}}</td>
-             <td>{{val.end_date}}</td>
-             <td>{{val.discount}}</td>
+            <td>{{val.start_date}}</td>
+            <td>{{val.end_date}}</td>
+            <td>{{val.discount}}</td>
 
-             <td>
-                 <button><a href="/update/{{val.id}}">EDIT</a></button>
-                 <button><a href="/add/">ADD</a></button>
+            <td>
+                <button><a href="/update/{{val.id}}">EDIT</a></button>
+                <button><a href="/add/">ADD</a></button>
 
-                 <button><a href="/delete/{{val.id}}/">DELETE</a></button>
+                <button><a href="/delete/{{val.id}}/">DELETE</a></button>
 
-             </td>
+            </td>
         </tr>
         {% endfor %}
         </tbody>
-  </table>
+    </table>
 </div>
-
-
 
 </body>
 </html>

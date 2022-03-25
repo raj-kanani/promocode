@@ -1,14 +1,15 @@
 from django.contrib import admin
 from .models import Coupon, UserData, Order
 
-
 admin.site.register(UserData)
 
+
 @admin.register(Coupon)
-class CoupenAdmin(admin.ModelAdmin):
+class CouponAdmin(admin.ModelAdmin):
     list_display = ['id', 'code', 'gender', 'start_date', 'end_date', 'discount']
     list_filter = ['start_date', 'end_date']
     search_fields = ['id']
+
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
