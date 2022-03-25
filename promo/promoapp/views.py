@@ -1,7 +1,7 @@
 import datetime
 from django.utils import timezone
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import Coupon, UserData, Order
 from .forms import AddCouponForm
@@ -55,13 +55,14 @@ def addorder(request):
 
         user = UserData.objects.filter(birth_date=request.user.birth_date).first()
 
-        if c.discounttype == 'Flat':
+        if c.discounttype == 'flat':
             order_total = order_amount - c.discount
         else:
             birthdate = user.birth_date
             today_date = datetime.date.today()
-            valid = timezone.now().date().strftime("%Y-%m-%d %H:%M:%S")
-            if birthdate and birthdate.strftime("%Y-%m-%d %H:%M:%S") == valid:
+            valid = timezone.now().date().strftime("%m-%d")
+
+            if birthdate and birthdate.strftime("%m-%d") == valid:
                 discount = order_amount * (c.discount / 100)
 
                 total = order_amount - discount
@@ -70,28 +71,33 @@ def addorder(request):
                 discount = order_amount * (c.discount / 100)
                 order_total = order_amount - discount
         try:
-            limit = c.user_limit
-            max = c.max_coupen
+
+            max_limit = c.max_coupen
+            user_limit = c.user_limit
 
             if user.is_authenticated:
-                uc = user.order_user.count()
-                cc = c.my_coupen.count()
+                user_count = len(Order.objects.filter(user=user, order_coupen=c))
+                coupon_count = len(Order.objects.filter(order_coupen=c))
 
-                if cc < max:
-                    if uc >= limit:
-                        return HttpResponse("Per user limit is over")
-                    print('hello india_____________________')
-                    new = Order.objects.create(order_coupen=c, order_amount=order_amount, order_total=order_total,
-                                               user=request.user)
-                    new.save()
-                else:
-                    return HttpResponse(" don't access same coupon multiple time, please use other available coupon...")
-        except:
-            create_order = Order.objects.create(order_coupen=c, order_amount=order_amount,
-                                                order_total=order_total, user=request.user)
-            create_order.used += 1
-            create_order.save()
-        return redirect('/showorder/')
+                if coupon_count > user_limit:
+                    return HttpResponse(" coupon limit over ")
+
+                if user_count > max_limit:
+                    return HttpResponse("Per user limit is over")
+
+                new_order = Order.objects.create(order_coupen=c, order_amount=order_amount, order_total=order_total,
+                                                 user=request.user)
+
+                c.max_coupen = c.max_coupen - 1
+                c.save()
+                return redirect('showorder')
+            else:
+
+                return HttpResponse("Coupon limit is over")
+        except Exception as e:
+            return HttpResponse(e.__str__())
+
+
     else:
         return render(request, 'order-add.html')
 
@@ -146,3 +152,29 @@ def deletecoupon(request, id):
     else:
         coupon.delete()
         return redirect('show')
+
+#
+# try:
+#            limit = c.user_limit
+#            max = c.max_coupen
+#
+#            if user.is_authenticated:
+#                uc = user.order_user.count()
+#                cc = c.my_coupen.count()
+#
+#                if cc > max:
+#                    if uc >= limit:
+#                        return HttpResponse(" only 3 coupon used per user ")
+#
+#                    new_order = Order.objects.create(order_coupen=c, order_amount=order_amount, order_total=order_total,
+#                                                     user=request.user)
+#                    new_order.save()
+#                else:
+#                    return HttpResponse(" don't access same coupon multiple time..")
+#        except:
+#            new_order = Order.objects.create(order_coupen=c, order_amount=order_amount,
+#                                             order_total=order_total, user=request.user)
+#
+#            new_order.used += 1
+#            new_order.save()
+#        return redirect('/showorder/')

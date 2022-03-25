@@ -3,12 +3,13 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, RegexValidator, MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 
 class Coupon(models.Model):
-    code = models.CharField(max_length=5, unique=True,
+    code = models.CharField(max_length=10, unique=True,
                             validators=[RegexValidator(
-                                "^[A-Z0-9]*$", "please enter uppercase letters & numbers",
+                                "^[A-Z0-9]*$", "code enter must be uppercase letters & numbers",
                             )], null=True, blank=True)
     GENDER_CHOICES = (
         ('Male', 'Male'),
@@ -18,17 +19,17 @@ class Coupon(models.Model):
     end_date = models.DateTimeField()
     discount = models.IntegerField(default=None, validators=[MaxValueValidator(100)])
 
-    TYPE_CHOICES = [('Flat', 'flat'),
+    TYPE_CHOICES = [('flat', 'Flat'),
                     ('Percentage', 'percentage')]
 
-    discounttype = models.CharField(choices=TYPE_CHOICES, default='flat', max_length=10)
+    discounttype = models.CharField(choices=TYPE_CHOICES, default='Flat', max_length=10)
     max_coupen = models.IntegerField(null=True)
     user_limit = models.IntegerField(null=True)
 
     def clean(self):
         super().clean()
         if not (self.start_date <= self.end_date):
-            raise ValidationError('Invalid start and end datetime')
+            raise ValidationError("Don't select Invalid start and end date")
 
     def save(self, *args, **kwargs):
         self.code = self.code.upper()
@@ -36,7 +37,6 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
-
 
 class UserData(AbstractUser):
     birth_date = models.DateField(null=True, blank=True)
