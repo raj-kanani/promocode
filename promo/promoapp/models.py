@@ -15,8 +15,18 @@ class Coupon(models.Model):
         ('Male', 'Male'),
         ('Female', 'Female'),)
     gender = models.CharField(max_length=7, choices=GENDER_CHOICES)
-    start_date = models.DateTimeField(default=datetime.now)
-    end_date = models.DateTimeField()
+    def start_dates(start):
+        sd = timezone.now()
+        if start < sd:
+            raise ValidationError('enter current date..')
+
+    def end_dates(end):
+        ed = timezone.now()
+        if end < ed:
+            raise ValidationError('enter future date....')
+
+    start_date = models.DateTimeField(validators=[start_dates])
+    end_date = models.DateTimeField(validators=[end_dates])
     discount = models.IntegerField(default=None, validators=[MaxValueValidator(100)])
 
     TYPE_CHOICES = [('flat', 'Flat'),
@@ -25,6 +35,7 @@ class Coupon(models.Model):
     discounttype = models.CharField(choices=TYPE_CHOICES, default='Flat', max_length=10)
     max_coupen = models.IntegerField(null=True)
     user_limit = models.IntegerField(null=True)
+
 
     def clean(self):
         super().clean()
@@ -37,6 +48,7 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
+
 
 class UserData(AbstractUser):
     birth_date = models.DateField(null=True, blank=True)
